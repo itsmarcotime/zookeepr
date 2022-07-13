@@ -123,6 +123,7 @@ app.post('/api/animals', (req, res) => {
 
 });
 
+//here we are validating data making sure everthing exits & it is the correct type of data
 function validateAnimal(animal) {
     if ( !animal.name || typeof animal.anme !== 'string') {
         return false;
