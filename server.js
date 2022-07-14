@@ -1,21 +1,20 @@
 const fs = require('fs');
 const path = require('path');
-const {animals} = require('./data/animals');
 const express = require('express');
-const { allowedNodeEnvironmentFlags } = require('process');
+const {animals} = require('./data/animals');
 
 //tell heroku to run port 'process.env.PORT(this runs port 80)' if it has been set, if not default to port 3001
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+//this will help server read or make the files that come with HTML 'public' such as CSS or frontend JS so this 
+// way it can be read by server.
+app.use(express.static('public'));
+
 //parse incoming string or array data
 app.use(express.urlencoded({extended: true}));
 //parse incoming json data
 app.use(express.json());
-
-app.listen(PORT, () => {
-    console.log(`API server now on port ${PORT}`)
-});
 
 function filterByQuery(query, animalsArray) {
 
@@ -84,6 +83,24 @@ function createNewAnimal(body, animalsArray) {
 
 }
 
+//here we are validating data making sure everthing exits & it is the correct type of data
+function validateAnimal(animal) {
+    if ( !animal.name || typeof animal.anme !== 'string') {
+        return false;
+    }
+    if (!animal.species || typeof animal.species !== 'string') {
+        return false;
+    }
+    if (!animal.diet || typeof animal.diet !== 'string') {
+        return false;
+    }
+    if (!animal.personalityTraits || !Array.isArray (animal.personalityTraits)) {
+        return false;
+    };
+
+    return true;
+}
+
 app.get('/api/animals', (req, res) => {
 
     let results = animals;
@@ -115,7 +132,7 @@ app.post('/api/animals', (req, res) => {
 
     //if any data in req.body is incorrect, send a400 error back
     if (!validateAnimal(req.body)) {
-        res.status(400).send('The animal is not properly formattaed.')
+        res.status(400).send('The animal is not properly formatted.')
     } else {
         const animal = createNewAnimal(req.body, animals);
         res.json(animal)
@@ -123,20 +140,13 @@ app.post('/api/animals', (req, res) => {
 
 });
 
-//here we are validating data making sure everthing exits & it is the correct type of data
-function validateAnimal(animal) {
-    if ( !animal.name || typeof animal.anme !== 'string') {
-        return false;
-    }
-    if (!animal.species || typeof animal.species !== 'string') {
-        return false;
-    }
-    if (!animal.diet || typeof animal.diet !== 'string') {
-        return false;
-    }
-    if (!animal.personalityTraits || !Array.isArray (animal.personalityTraits)) {
-        return false;
-    };
+//this get route will respond with an HTML page to display in browser. *important*
+app.get('/', (req, res) => {
 
-    return true;
-}
+    res.sendFile(path.join(__dirname, './public/index.html'));
+
+});
+
+app.listen(PORT, () => {
+    console.log(`API server now on port ${PORT}`)
+});
