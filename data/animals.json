@@ -252,6 +252,33 @@
     },
     {
       "id": "46"
+    },
+    {
+      "name": "chichi",
+      "species": "lemur",
+      "diet": "carnivore",
+      "personalityTraits": [
+        "hungry"
+      ],
+      "id": "47"
+    },
+    {
+      "name": "chichi",
+      "species": "lemur",
+      "diet": "carnivore",
+      "personalityTraits": [
+        "hungry"
+      ],
+      "id": "48"
+    },
+    {
+      "name": "chichi",
+      "species": "lemur",
+      "diet": "carnivore",
+      "personalityTraits": [
+        "hungry"
+      ],
+      "id": "49"
     }
   ]
 }

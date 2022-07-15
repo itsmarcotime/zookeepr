@@ -131,7 +131,7 @@ app.post('/api/animals', (req, res) => {
     req.body.id = animals.length.toString();
 
     //if any data in req.body is incorrect, send a400 error back
-    if (!validateAnimal(req.body)) {
+    if (validateAnimal(req.body)) {
         res.status(400).send('The animal is not properly formatted.')
     } else {
         const animal = createNewAnimal(req.body, animals);
@@ -145,6 +145,24 @@ app.get('/', (req, res) => {
 
     res.sendFile(path.join(__dirname, './public/index.html'));
 
+});
+
+//this get route links us to the animals.html
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+//this get route links us to the zookeepers html
+app.get('/zookeepers', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+});
+
+// wild card route, this is incase users tries to make a request that doesn't exist.
+// the '*' acts as a wildcard, meaning any route that wasnt previouly defined 
+// will fall under this request and will recieve the homepage as a response.
+// wild card routes, or '*' routes, come last.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
 app.listen(PORT, () => {
