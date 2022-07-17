@@ -41,7 +41,7 @@ const getZookeepers = (formData = {}) => {
   });
 };
 
-//this function will handle the form data
+//this function will handle the form data aka this will get the zookeepers search bar working.
 const handleGetZookeepersSubmit = event => {
 
   event.preventDefault();
